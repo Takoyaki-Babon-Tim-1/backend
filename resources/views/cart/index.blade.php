@@ -23,40 +23,42 @@
                 </thead>
                 <tbody>
                     <!-- Loop through each product in the cart -->
-                    {{-- @foreach ($cartItems as $item) --}}
+                    @foreach ($cartItems as $item)
                     <tr class="border-b">
-                        <td class="py-4">Burger</td>
-                        <td class="py-4"> IDR 10000</td>
+                        <td class="py-4">{{$item->product->name}}</td>
+                        <td class="py-4">Rp {{number_format($item->product->price, 0, ',', '.')}}</td>
                         <td class="py-4">
                             <div class="flex items-center space-x-2">
                                 <!-- Button for decreasing the quantity -->
                                 <form action="" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <input type="hidden" name="quantity" value="">
-                                    {{-- <input type="hidden" name="quantity" value="{{ $item->quantity - 1 }}"> --}}
+                                    {{-- <input type="hidden" name="quantity" value=""> --}}
+                                    <input type="hidden" name="quantity" value="{{ $item->quantity - 1 }}">
                                     <button type="submit" class="bg-gray-300 text-gray-700 rounded-lg px-3 py-1 hover:bg-gray-400">
                                         -
                                     </button>
                                 </form>
     
-                                <span>tes</span>
-                                {{-- <span>{{ $item->quantity }}</span> --}}
+                                <span>{{ $item->quantity }}</span>
     
                                 <!-- Button for increasing the quantity -->
-                                <form action="" method="POST">
-                                {{-- <form action="{{ route('cart.update', $item->id) }}" method="POST"> --}}
+                                {{-- <form action="" method="POST"> --}}
+                                <form action="{{ route('cart.update', $item->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <input type="hidden" name="quantity" value="">
-                                    {{-- <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}"> --}}
+                                    {{-- <input type="hidden" name="quantity" value=""> --}}
+                                    <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}">
                                     <button type="submit" class="bg-gray-300 text-gray-700 rounded-lg px-3 py-1 hover:bg-gray-400">
                                         +
                                     </button>
                                 </form>
                             </div>
                         </td>
-                        <td class="py-4"> IDR 10000</td>
+                        @php
+                            $total_products = $item->product->price * $item->quantity
+                        @endphp
+                        <td class="py-4">Rp {{number_format($total_products, 0, ',', '.')}}</td>
                         <td class="py-4">
                             <!-- Button for removing the item from the cart -->
                             <form action="" method="POST">
@@ -66,14 +68,20 @@
                             </form>
                         </td>
                     </tr>
-                    {{-- @endforeach --}}
+                    @endforeach
                 </tbody>
             </table>
     
             <!-- Display total price -->
             <div class="flex justify-end mt-5">
+                @php
+                    $total = 0;
+                    foreach ($cartItems as $item) {
+                        $total += $item->product->price * $item->quantity;
+                    }
+                @endphp
                 <h2 class="text-2xl font-semibold">Total: IDR</h2>
-                {{-- <h2 class="text-2xl font-semibold">Total: {{ number_format($totalPrice, 0, ',', '.') }} IDR</h2> --}}
+                <h2 class="text-2xl font-semibold">Total: {{ number_format($total, 0, ',', '.') }} IDR</h2>
             </div>
     
             <!-- Checkout button -->

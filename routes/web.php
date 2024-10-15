@@ -29,7 +29,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
+    // Route untuk menampilkan halaman Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+    // Route untuk menambahkan produk ke Cart
+    Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
+
+    // Route untuk memperbarui jumlah produk di Cart
+    Route::patch('/cart/update/{cartId}', [CartController::class, 'update'])->name('cart.update');
+
+    // Route untuk menghapus produk dari Cart
+    Route::delete('/cart/remove/{cartId}', [CartController::class, 'remove'])->name('cart.remove');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
