@@ -5,84 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-        .button {
-            padding: 0.5rem 1rem;
-            background-color: #3490dc;
-            color: white;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Your Cart</h2>
-        @if (session('cart') && count(session('cart')) > 0)
-            <table class="table-auto w-full">
+    <div class="container mx-auto my-10">
+        <h1 class="text-3xl font-bold mb-5">Your Cart</h1>
+    
+        <div class="bg-white shadow-lg rounded-lg p-5">
+            <table class="w-full text-left">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Action</th>
+                        <th class="pb-4">Product</th>
+                        <th class="pb-4">Price</th>
+                        <th class="pb-4">Quantity</th>
+                        <th class="pb-4">Total</th>
+                        <th class="pb-4"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $totalQuantity = 0;
-                        $totalPrice = 0;
-                    @endphp
-                    @foreach (session('cart') as $id => $item)
-                        @php
-                            $totalQuantity += $item['quantity'];
-                            
-                            $totalPrice += $item['total_price'];
-                        @endphp
-                        <tr>
-                            <td>{{ $item['name'] }}</td>
-                            <td>
-                                <form action="{{ route('cart.update', $id) }}" method="POST" class="inline-block">
+                    <!-- Loop through each product in the cart -->
+                    {{-- @foreach ($cartItems as $item) --}}
+                    <tr class="border-b">
+                        <td class="py-4">Burger</td>
+                        <td class="py-4"> IDR 10000</td>
+                        <td class="py-4">
+                            <div class="flex items-center space-x-2">
+                                <!-- Button for decreasing the quantity -->
+                                <form action="" method="POST">
                                     @csrf
-                                    <button type="submit" name="action" value="decrease" class="button bg-gray-300 text-black">-</button>
+                                    @method('PATCH')
+                                    <input type="hidden" name="quantity" value="">
+                                    {{-- <input type="hidden" name="quantity" value="{{ $item->quantity - 1 }}"> --}}
+                                    <button type="submit" class="bg-gray-300 text-gray-700 rounded-lg px-3 py-1 hover:bg-gray-400">
+                                        -
+                                    </button>
                                 </form>
-                                {{ $item['quantity'] }}
-                                <form action="{{ route('cart.update', $id) }}" method="POST" class="inline-block">
+    
+                                <span>tes</span>
+                                {{-- <span>{{ $item->quantity }}</span> --}}
+    
+                                <!-- Button for increasing the quantity -->
+                                <form action="" method="POST">
+                                {{-- <form action="{{ route('cart.update', $item->id) }}" method="POST"> --}}
                                     @csrf
-                                    <button type="submit" name="action" value="increase" class="button">+</button>
+                                    @method('PATCH')
+                                    <input type="hidden" name="quantity" value="">
+                                    {{-- <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}"> --}}
+                                    <button type="submit" class="bg-gray-300 text-gray-700 rounded-lg px-3 py-1 hover:bg-gray-400">
+                                        +
+                                    </button>
                                 </form>
-                            </td>
-                            <td>Rp {{ number_format($item['total_price'], 0, ',', '.') }}</td>
-                            <td>
-                                <form action="{{ route('cart.remove', $id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="button bg-red-500 text-white">Remove</button>
-                                </form>
-                            </td>
-                            
-                        </tr>
-
-                        
-                    @endforeach
+                            </div>
+                        </td>
+                        <td class="py-4"> IDR 10000</td>
+                        <td class="py-4">
+                            <!-- Button for removing the item from the cart -->
+                            <form action="" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{-- @endforeach --}}
                 </tbody>
-                
             </table>
-
-            <div class="mt-4">
-                <h3>Total Quantity: {{ $totalQuantity }}</h3>
-                <h3>Total Price: Rp {{ number_format($totalPrice, 0, ',', '.') }}</h3>
+    
+            <!-- Display total price -->
+            <div class="flex justify-end mt-5">
+                <h2 class="text-2xl font-semibold">Total: IDR</h2>
+                {{-- <h2 class="text-2xl font-semibold">Total: {{ number_format($totalPrice, 0, ',', '.') }} IDR</h2> --}}
             </div>
-
-            <div class="mt-4">
-                <form action="" method="POST">
-                    @csrf
-                    <button type="submit" class="button bg-green-500">Checkout</button>
-                </form>
+    
+            <!-- Checkout button -->
+            <div class="flex justify-end mt-5">
+                <a href="/checkout" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+                    Proceed to Checkout
+                </a>
             </div>
-        @else
-            <p>Your cart is empty!</p>
-        @endif
+        </div>
     </div>
+    
 </body>
 </html>

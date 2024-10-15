@@ -71,10 +71,10 @@ return [
 
     'livewire_loading_delay' => 'default',
     'middleware' => [
-    'web',
-    'auth',
-    'check.role', // Tambahkan middleware ini
-],
+        'web',
+        'auth',
+        'check.role', 
+    ],
 
 
 ];

@@ -18,25 +18,30 @@
             <a href="/" class="text-lg font-bold">E-commerce</a>
         </div>
         <div class="flex items-center gap-4">
-            <!-- Other navbar links -->
+            @guest
+                <a href="/login">Login</a>
+            @endguest
+            @auth
+                <p class="font-semibold">Hi, {{ Auth::user()->name }}</p>
+                <!-- Tombol Cart -->
+                <a href="{{route('cart.index')}}"
+                    class="relative bg-[#F1A635] text-white py-2 px-4 rounded-lg hover:bg-[#b27a28] transition-all duration-300">
+                    Cart
+                    <span
+                        class="absolute top-0 right-0 translate-x-2 -translate-y-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                        <!-- Tampilkan jumlah item dalam cart -->
+                        {{-- {{ Cart::count() }} --}}
+                    </span>
+                </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="relative bg-[#6635F1] text-white py-2 px-4 rounded-lg hover:bg-[#4c28b2] transition-all duration-300">
+                        Logout
+                    </button>
+                </form>
+            @endauth
 
-            <!-- Cart Button -->
-            {{-- <a href="{{ route('cart.show') }}" class="relative bg-[#6635F1] text-white py-2 px-4 rounded-lg hover:bg-[#4c28b2] transition-all duration-300">
-                Cart
-                <!-- Cart Count Badge -->
-                @if (session('cart'))
-                    @php
-                        $totalQuantity = array_sum(array_column(session('cart'), 'quantity'));
-                    @endphp
-                    <span class="absolute top-0 right-0 bg-red-500 rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                        {{ $totalQuantity }}
-                    </span>
-                @else
-                    <span class="absolute top-0 right-0 bg-red-500 rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                        0
-                    </span>
-                @endif
-            </a> --}}
         </div>
     </nav>
 
@@ -87,13 +92,7 @@
                                 Add to Cart
                             </button>
                         </form>
-                        {{-- <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                            @csrf
-                            <button type="submit"
-                                class="bg-[#6635F1] text-white py-2 px-4 rounded-lg hover:bg-[#4c28b2] transition-all duration-300">
-                                Add to Cart
-                            </button>
-                        </form> --}}
+
                     </div>
                 </a>
             @empty
