@@ -1,97 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <div class="container mx-auto my-10">
-        <h1 class="text-3xl font-bold mb-5">Your Cart</h1>
-    
-        <div class="bg-white shadow-lg rounded-lg p-5">
-            <table class="w-full text-left">
-                <thead>
-                    <tr>
-                        <th class="pb-4">Product</th>
-                        <th class="pb-4">Price</th>
-                        <th class="pb-4">Quantity</th>
-                        <th class="pb-4">Total</th>
-                        <th class="pb-4"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loop through each product in the cart -->
-                    @foreach ($cartItems as $item)
-                    <tr class="border-b">
-                        <td class="py-4">{{$item->product->name}}</td>
-                        <td class="py-4">Rp {{number_format($item->product->price, 0, ',', '.')}}</td>
-                        <td class="py-4">
-                            <div class="flex items-center space-x-2">
-                                <!-- Button for decreasing the quantity -->
-                                <form action="" method="POST">
+@extends('front.layouts.app')
+@section('content')
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+            <h1 class="text-2xl font-bold my-4">Shopping Cart</h1>
+
+        </div>
+        <div class="mt-8">
+
+            @forelse ($cartItems as $item)
+                <div class="flex flex-col md:flex-row border-b border-gray-400 py-4">
+                    <div class="flex-shrink-0">
+                        <img src="{{ Storage::url($item->product->thumbnail) }}" alt="Product image"
+                            class="w-32 h-32 object-contain">
+                    </div>
+                    <div class="mt-4  md:ml-6">
+                        <h2 class="text-lg font-bold">{{ $item->product->name }}</h2>
+                        {{-- <p class="mt-2 text-gray-600">Product Description</p> --}}
+                        <div class="mt-4 flex items-center">
+                            <span class="mr-2 text-gray-600">Quantity:</span>
+                            <div class="flex items-center">
+                                {{-- Reduce quantity form --}}
+                                <form
+                                    action="{{ $item->quantity > 1 ? route('cart.update', $item->id) : route('cart.remove', $item->id) }}"
+                                    method="POST">
                                     @csrf
-                                    @method('PATCH')
-                                    {{-- <input type="hidden" name="quantity" value=""> --}}
-                                    <input type="hidden" name="quantity" value="{{ $item->quantity - 1 }}">
-                                    <button type="submit" class="bg-gray-300 text-gray-700 rounded-lg px-3 py-1 hover:bg-gray-400">
-                                        -
-                                    </button>
+                                    @if ($item->quantity > 1)
+                                        @method('PATCH')
+                                        <input type="hidden" name="quantity" value="{{ $item->quantity - 1 }}">
+                                        <button class="bg-gray-200 rounded-l-lg px-2 py-1">-</button>
+                                    @else
+                                        @method('DELETE')
+                                        <button class="bg-gray-200 rounded-l-lg px-2 py-1">-</button>
+                                    @endif
                                 </form>
-    
-                                <span>{{ $item->quantity }}</span>
-    
-                                <!-- Button for increasing the quantity -->
-                                {{-- <form action="" method="POST"> --}}
+
+                                {{-- Display current quantity --}}
+                                <span class="mx-2 text-gray-600">{{ $item->quantity }}</span>
+
+                                {{-- Increase quantity form --}}
                                 <form action="{{ route('cart.update', $item->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    {{-- <input type="hidden" name="quantity" value=""> --}}
                                     <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}">
-                                    <button type="submit" class="bg-gray-300 text-gray-700 rounded-lg px-3 py-1 hover:bg-gray-400">
-                                        +
-                                    </button>
+                                    <button class="bg-gray-200 rounded-r-lg px-2 py-1">+</button>
                                 </form>
                             </div>
-                        </td>
-                        @php
-                            $total_products = $item->product->price * $item->quantity
-                        @endphp
-                        <td class="py-4">Rp {{number_format($total_products, 0, ',', '.')}}</td>
-                        <td class="py-4">
-                            <!-- Button for removing the item from the cart -->
-                            <form action="" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-    
-            <!-- Display total price -->
-            <div class="flex justify-end mt-5">
+
+                            @php
+                                $total_products = $item->product->total * $item->quantity;
+                            @endphp
+                            {{-- Product Price --}}
+                            <span class="ml-auto font-bold">Rp {{ number_format($total_products, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <p>Tidak ada produk yang ditambahkan</p>
+            @endforelse
+
+
+
+        </div>
+        <div class="flex flex-col items-end mt-8">
+            <div class="flex justify-between w-full md:w-auto items-center">
+                <span class="text-gray-600 mr-4">Subtotal:</span>
                 @php
-                    $total = 0;
+                    $totalHarga = 0;
                     foreach ($cartItems as $item) {
-                        $total += $item->product->price * $item->quantity;
+                        $totalHarga += $item->product->total * $item->quantity;
                     }
                 @endphp
-                <h2 class="text-2xl font-semibold">Total: IDR</h2>
-                <h2 class="text-2xl font-semibold">Total: {{ number_format($total, 0, ',', '.') }} IDR</h2>
+                <span class="text-xl font-bold">Rp {{ number_format($totalHarga, 0, ',', '.') }}</span>
             </div>
-    
-            <!-- Checkout button -->
-            <div class="flex justify-end mt-5">
-                <a href="/checkout" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-                    Proceed to Checkout
-                </a>
-            </div>
+
+            
+            <button class="mt-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                Checkout
+            </button>
         </div>
+
     </div>
-    
-</body>
-</html>
+@endsection

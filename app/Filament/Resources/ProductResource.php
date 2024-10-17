@@ -49,8 +49,7 @@ class ProductResource extends Resource
                     ->label('Category')
                     ->relationship('category', 'name')
                     ->required(),
-                TextInput::make('total_price')
-                    ->disabled(),
+                
                 TextInput::make('discount')
                     ->label('Diskon')
                     ->numeric()
@@ -75,7 +74,7 @@ class ProductResource extends Resource
                     ->label('Available')
                     ->default(true),
 
-                TextColumn::make('price')
+                TextColumn::make('total')
                     ->label('Harga')
                     ->money('idr', true),
                 TextColumn::make('discount')

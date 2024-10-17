@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\AddToCart;
@@ -20,8 +21,8 @@ class CartController extends Controller
         $product = Product::findOrFail($productId);
 
         $cart = AddToCart::where('user_id', Auth::id())
-                    ->where('product_id', $product->id)
-                    ->first();
+            ->where('product_id', $product->id)
+            ->first();
 
         if ($cart) {
             $cart->quantity += $request->input('quantity', 1);
@@ -43,6 +44,12 @@ class CartController extends Controller
         $cart->quantity = $request->input('quantity');
         $cart->save();
 
+        if ($request->quantity > 0) {
+            $cart->update(['quantity' => $request->quantity]);
+        } else {
+            return $this->destroy($cartId);
+        }
+
         return redirect()->route('cart.index')->with('success', 'Cart updated successfully!');
     }
 
@@ -53,5 +60,6 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Product removed from cart!');
     }
-}
 
+   
+}

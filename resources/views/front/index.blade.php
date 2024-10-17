@@ -1,213 +1,169 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body class="font-poppins text-[rgb(3,3,3)] bg-[#F6F5FA] pb-[100px] px-4 sm:px-0">
-
-    <!-- Navbar Section -->
-    <nav class="flex items-center justify-between p-5 bg-white shadow-md">
-        <div class="logo">
-            <!-- Your Logo -->
-            <a href="/" class="text-lg font-bold">E-commerce</a>
-        </div>
-        <div class="flex items-center gap-4">
+@extends('front.layouts.app')
+@section('content')
+    <nav class="flex items-center justify-between px-5 mt-[30px]">
+        <a href="index.html" class="flex shrink-0">
+            <p class="font-bold">Takoyaki</p>
+        </a>
+        <div class="flex gap-1 items-center">
             @guest
                 <a href="/login">Login</a>
             @endguest
             @auth
                 <p class="font-semibold">Hi, {{ Auth::user()->name }}</p>
-                <!-- Tombol Cart -->
-                <a href="{{ route('cart.index') }}"
-                    class="relative bg-[#F1A635] text-white py-2 px-4 rounded-lg hover:bg-[#b27a28] transition-all duration-300">
-                    Cart
-                    <span
-                        class="absolute top-0 right-0 translate-x-2 -translate-y-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
-                        {{ $cartItemCount }}
-                    </span>
-                </a>
+                <a href="{{ route('cart.index') }}">
+                    <div class="relative">
+                        <div
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_10px_20px_0_#D6D6D6AB] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF4C1C80]">
+                            <img src="https://img.icons8.com/material-outlined/48/shopping-cart--v1.png"
+                                class="w-5 h-5 object-contain" alt="icon">
+                        </div>
 
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit"
-                        class="relative bg-[#6635F1] text-white py-2 px-4 rounded-lg hover:bg-[#4c28b2] transition-all duration-300">
-                        Logout
-                    </button>
-                </form>
+                        <span
+                            class="absolute bottom-0 right-0 flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-red-600 rounded-full">
+                            {{ $cartItemCount }}
+                        </span>
+                    </div>
+                </a>
             @endauth
 
+
         </div>
+
     </nav>
+    <div id="SearchForm" class="px-5 mt-[30px]">
+        <form action="search.html"
+            class="flex items-center rounded-full p-[5px_14px] pr-[5px] gap-[10px] bg-white shadow-[0_12px_30px_0_#D6D6D652] transition-all duration-300 focus-within:ring-1 focus-within:ring-[#FF4C1C]">
+            <img src="assets/images/icons/note-favorite.svg" class="w-6 h-6" alt="icon">
+            <input type="text" name="search" id="search"
+                class="appearance-none outline-none w-full font-semibold placeholder:font-normal placeholder:text-black"
+                placeholder="Find our best food recipes">
+            <button type="submit" class=" flex shrink-0 w-[42px] h-[42px]">
+                <img src="assets/images/icons/search.svg" alt="icon">
+            </button>
+        </form>
+    </div>
 
-    <!-- Produk yang Tersedia (Available) -->
-    <section id="available-products" class="container max-w-[1130px] mx-auto flex flex-col gap-4 mt-[50px]">
-        <h2 class="font-bold text-xl">Menu</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-5">
-            @forelse ($products->where('is_available', true) as $product)
-                <a href="details.html" class="card">
-                    <div
-                        class="p-5 rounded-[20px] bg-white flex flex-col gap-5 hover:ring-2 hover:ring-[#6635F1] transition-all duration-300">
-                        <div class="w-full h-[140px] rounded-[20px] overflow-hidden relative">
-                            @if ($product->discount)
-                                @php
-                                    $persentase = round(($product->discount / $product->price) * 100);
-                                @endphp
-                                <div
-                                    class="font-bold text-xs leading-[18px] text-white bg-red-700 p-[5px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
-                                    -{{ $persentase }}%
-                                </div>
-                            @endif
-
-                            <img src="{{ Storage::url($product->thumbnail) }}" class="w-full h-full object-cover"
-                                alt="thumbnail">
-                        </div>
-                        <div class="flex flex-col gap-[10px]">
-                            <p class="title font-semibold text-lg min-h-[56px] line-clamp-2 hover:line-clamp-none">
-                                {{ $product->name }}</p>
-
-                            @if ($product->discount)
-                                <div class="flex items-center gap-[6px]">
-                                    <p class="font-semibold text-l">Harga: Rp
-                                        {{ number_format($product->total, 0, ',', '.') }} </p>
-                                    <p class="font-semibold text-sm line-through text-red-500">Rp
-                                        {{ number_format($product->price, 0, ',', '.') }}</p>
-                                </div>
-                            @else
-                                <p class="font-semibold text-l">Harga: Rp
-                                    {{ number_format($product->total, 0, ',', '.') }}</p>
-                            @endif
-                        </div>
-
-                        <!-- Tombol Add to Cart -->
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                            @csrf
-                            <button type="submit"
-                                class="bg-[#6635F1] text-white py-2 px-4 rounded-lg hover:bg-[#4c28b2] transition-all duration-300">
-                                Add to Cart
-                            </button>
-                        </form>
-
-                    </div>
-                </a>
-            @empty
-                <p>No products available.</p>
-            @endforelse
+    {{-- Caategory --}}
+    <section id="Categories" class="mt-[30px]">
+        <div class="flex items-center justify-between px-5">
+            <h2 class="font-bold">Kategori</h2>
         </div>
-    </section>
-
-    <!-- Produk yang Tidak Tersedia (Unavailable) -->
-    <section id="unavailable-products" class="container max-w-[1130px] mx-auto flex flex-col gap-4 mt-[50px]">
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-5">
-            @forelse ($products->where('is_available', false) as $product)
-                <div class="card">
-                    <div
-                        class="p-5 rounded-[20px] bg-white flex flex-col gap-5 transition-all duration-300 relative cursor-not-allowed">
-                        <div class="w-full h-[140px] rounded-[20px] overflow-hidden relative">
-                            <img src="{{ Storage::url($product->thumbnail) }}" class="w-full h-full object-cover"
-                                alt="thumbnail">
-
+        <div class="swiper w-full mt-3">
+            <div class="swiper-wrapper">
+                @forelse ($categories as $category)
+                    <div class="swiper-slide !w-fit pb-[30px]">
+                        <a href="category.html" class="card">
                             <div
-                                class="font-bold text-xs leading-[18px] text-white bg-gray-700 p-[5px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
-                                Tidak Tersedia
-                            </div>
-                        </div>
-                        <div class="flex flex-col gap-[10px]">
-                            <p class="title font-semibold text-lg min-h-[56px] line-clamp-2">{{ $product->name }}</p>
-
-                            @if ($product->discount)
-                                @php
-                                    $finalPrice = $product->price - $product->discount;
-                                @endphp
-                                <div class="flex items-center gap-[6px]">
-                                    <p class="font-semibold text-l">Harga: Rp
-                                        {{ number_format($finalPrice, 0, ',', '.') }} </p>
-                                    <p class="font-semibold text-sm line-through text-red-500">Rp
-                                        {{ number_format($product->price, 0, ',', '.') }}</p>
+                                class="flex flex-col w-fit min-w-[90px] rounded-[31px] p-[10px] pb-5 gap-[10px] text-center bg-white shadow-[0_12px_30px_0_#D6D6D680] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF4C1C80] hover:bg-[#FF4C1C] hover:text-white">
+                                <div class="flex shrink-0 w-[70px] h-[70px] rounded-full bg-white">
+                                    <img src="{{ Storage::url($category->icon) }}"
+                                        class="object-cover w-full h-full object-top" alt="icon">
                                 </div>
-                            @else
-                                <p class="font-semibold text-l">Harga: Rp
-                                    {{ number_format($product->price, 0, ',', '.') }}</p>
-                            @endif
-                        </div>
-
-                        <!-- Tombol Disabled -->
-                        <button type="button" disabled
-                            class="bg-gray-400 text-white py-2 px-4 rounded-lg cursor-not-allowed">
-                            Add to Cart (Unavailable)
-                        </button>
+                                <h3 class="font-semibold text-sm leading-[21px]">{{ $category->name }}</h3>
+                            </div>
+                        </a>
                     </div>
-                </div>
-            @empty
-            @endforelse
+                @empty
+                @endforelse
+
+
+            </div>
         </div>
     </section>
+    {{-- End Category --}}
 
 
-
+    {{-- diskon --}}
     @php
         $discountedProducts = $products->filter(function ($product) {
             return $product->discount > 0;
         });
     @endphp
-
     @if ($discountedProducts->isNotEmpty())
-        <section id="featured" class="container max-w-[1130px] mx-auto flex flex-col gap-4 mt-[50px]">
-            <h2 class="font-bold text-xl">Menu Diskon</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-4 gap-5">
-                @foreach ($discountedProducts as $product)
-                    <a href="details.html" class="card">
-                        <div
-                            class="p-5 rounded-[20px] bg-white flex flex-col gap-5 hover:ring-2 hover:ring-[#6635F1] transition-all duration-300">
-                            <div class="w-full h-[140px] rounded-[20px] overflow-hidden relative">
+        <section id="Diskon">
+            <div class="flex items-center justify-between px-5">
+                <h2 class="font-bold">Produk Diskon</h2>
+                <a href="#" class="font-semibold text-sm leading-[21px] text-[#FF4C1C]">Explore All</a>
+            </div>
+            <div class="swiper w-full mt-3 pb-[100px]">
+                <div class="swiper-wrapper">
 
-                                @php
-                                    $persentase = round(($product->discount / $product->price) * 100);
-                                @endphp
+                    @foreach ($discountedProducts as $product)
+                        <div class="swiper-slide w-fit">
+                            <a href="#" class="card">
                                 <div
-                                    class="font-bold text-xs leading-[18px] text-white bg-red-700 p-[5px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
-                                    -{{ $persentase }}%
+                                    class="w-[250px] shrink-0 space-y-[10px] rounded-[30px] border border-[#F1F2F6] p-4 pb-5 transition-all duration-300 hover:border-[#FF4C1C]">
+                                    <div
+                                        class="flex h-[150px] w-full shrink-0 items-center justify-center overflow-hidden rounded-[30px] bg-[#D9D9D9]">
+                                        @php
+                                            $persentase = round(($product->discount / $product->price) * 100);
+                                        @endphp
+                                        <div
+                                            class="font-bold text-xs leading-[18px] text-white bg-red-700 p-[10px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
+                                            -{{ $persentase }}%
+                                        </div>
+                                        <img src="{{ Storage::url($product->thumbnail) }}" alt="image"
+                                            class="h-full w-full object-cover" />
+                                    </div>
+                                    <div class="space-y-3">
+                                        <h3 class="line-clamp-2 min-h-[14px] text-lg font-semibold leading-[27px]">
+                                            {{ $product->name }}</h3>
+                                        <hr class="border-[#F1F2F6]" />
+                                        <p class="text-ngekos-orange text-lg font-semibold">Rp
+                                            {{ number_format($product->total, 0, ',', '.') }}/<span
+                                                class="text-ngekos-gray text-sm font-normal line-through text-red-500">Rp
+                                                {{ number_format($product->price, 0, ',', '.') }}</span></p>
+                                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                class="bg-[#FF4C1C] text-white py-2 px-4 rounded-lg hover:bg-[#ff241c] transition-all duration-300">
+                                                Add to Cart
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
-
-                                <img src="{{ Storage::url($product->thumbnail) }}" class="w-full h-full object-cover"
-                                    alt="thumbnail">
-                            </div>
-                            <div class="flex flex-col gap-[10px]">
-                                <p class="title font-semibold text-lg min-h-[56px] line-clamp-2 hover:line-clamp-none">
-                                    {{ $product->name }}</p>
-
-                                @php
-                                    $finalPrice = $product->price - $product->discount;
-                                @endphp
-                                <div class="flex items-center gap-[6px]">
-                                    <p class="font-semibold text-l">Harga: Rp
-                                        {{ number_format($finalPrice, 0, ',', '.') }} </p>
-                                    <p class="font-semibold text-sm line-through text-red-500">Rp
-                                        {{ number_format($product->price, 0, ',', '.') }}</p>
-                                </div>
-                            </div>
-                            <!-- Tombol Add to Cart -->
-                            <form action="" method="POST">
-                                @csrf
-                                <button type="submit"
-                                    class="bg-[#6635F1] text-white py-2 px-4 rounded-lg hover:bg-[#4c28b2] transition-all duration-300">
-                                    Add to Cart
-                                </button>
-                            </form>
+                            </a>
                         </div>
-                    </a>
-                @endforeach
+                    @endforeach
+
+
+
+                </div>
             </div>
         </section>
     @endif
+    {{-- end diskon --}}
 
 
 
-</body>
-
-</html>
+    {{-- Nav --}}
+    <div id="BottomNav"
+        class="fixed z-50 bottom-0 w-full max-w-[640px] mx-auto border-t border-[#E7E7E7] py-4 px-5 bg-white/70 backdrop-blur">
+        <div class="flex items-center justify-evenly ">
+            <a href="#" class="nav-items">
+                <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px] font-semibold">
+                    <img src="assets/images/icons/note-favorite-orange.svg" class="w-6 h-6" alt="icon">
+                    <span>Browse</span>
+                </div>
+            </a>
+            <a href="#" class="nav-items">
+                <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
+                    <img src="assets/images/icons/crown-grey.svg" class="w-6 h-6" alt="icon">
+                    <span>Featured</span>
+                </div>
+            </a>
+            <a href="#" class="nav-items">
+                <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
+                    <img src="assets/images/icons/receipt-item-grey.svg" class="w-6 h-6" alt="icon">
+                    <span>Pricing</span>
+                </div>
+            </a>
+            <a href="#" class="nav-items">
+                <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
+                    <img src="assets/images/icons/setting-2-grey.svg" class="w-6 h-6" alt="icon">
+                    <span>Settings</span>
+                </div>
+            </a>
+        </div>
+    </div>
+@endsection

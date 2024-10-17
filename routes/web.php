@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function () {
 
     // Route untuk menghapus produk dari Cart
     Route::delete('/cart/remove/{cartId}', [CartController::class, 'remove'])->name('cart.remove');
+
+
 });
 
 require __DIR__ . '/auth.php';
