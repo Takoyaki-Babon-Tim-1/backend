@@ -7,13 +7,22 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class CartController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        $cartItems = AddToCart::where('user_id', $user->id)->get();
+
+        $totalPrice = 0;
+        foreach ($cartItems as $item) {
+            $totalPrice += $item->product->total * $item->quantity;
+        }
         $cartItems = AddToCart::where('user_id', Auth::id())->with('product')->get();
-        return view('cart.index', compact('cartItems'));
+        return view('cart.index', compact('cartItems', 'totalPrice'));
     }
 
     public function add(Request $request, $productId)

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +42,8 @@ Route::middleware('auth')->group(function () {
 
     // Route untuk menghapus produk dari Cart
     Route::delete('/cart/remove/{cartId}', [CartController::class, 'remove'])->name('cart.remove');
-
+    Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+    Route::get('/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');
 
 });
 

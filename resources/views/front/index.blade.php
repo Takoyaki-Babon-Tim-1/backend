@@ -74,11 +74,6 @@
 
 
     {{-- diskon --}}
-    @php
-        $discountedProducts = $products->filter(function ($product) {
-            return $product->discount > 0;
-        });
-    @endphp
     @if ($discountedProducts->isNotEmpty())
         <section id="Diskon">
             <div class="flex items-center justify-between px-5">
@@ -95,12 +90,9 @@
                                     class="w-[250px] shrink-0 space-y-[10px] rounded-[30px] border border-[#F1F2F6] p-4 pb-5 transition-all duration-300 hover:border-[#FF4C1C]">
                                     <div
                                         class="flex h-[150px] w-full shrink-0 items-center justify-center overflow-hidden rounded-[30px] bg-[#D9D9D9]">
-                                        @php
-                                            $persentase = round(($product->discount / $product->price) * 100);
-                                        @endphp
                                         <div
                                             class="font-bold text-xs leading-[18px] text-white bg-red-700 p-[10px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
-                                            -{{ $persentase }}%
+                                            -{{ $product->discount_percentage }}%
                                         </div>
                                         <img src="{{ Storage::url($product->thumbnail) }}" alt="image"
                                             class="h-full w-full object-cover" />
@@ -110,7 +102,7 @@
                                             {{ $product->name }}</h3>
                                         <hr class="border-[#F1F2F6]" />
                                         <p class="text-ngekos-orange text-lg font-semibold">Rp
-                                            {{ number_format($product->total, 0, ',', '.') }}/<span
+                                            {{ number_format($product->total, 0, ',', '.') }}  <span
                                                 class="text-ngekos-gray text-sm font-normal line-through text-red-500">Rp
                                                 {{ number_format($product->price, 0, ',', '.') }}</span></p>
                                         <form action="{{ route('cart.add', $product->id) }}" method="POST">

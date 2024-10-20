@@ -64,19 +64,10 @@
         <div class="flex flex-col items-end mt-8">
             <div class="flex justify-between w-full md:w-auto items-center">
                 <span class="text-gray-600 mr-4">Subtotal:</span>
-                @php
-                    $totalHarga = 0;
-                    foreach ($cartItems as $item) {
-                        $totalHarga += $item->product->total * $item->quantity;
-                    }
-                @endphp
-                <span class="text-xl font-bold">Rp {{ number_format($totalHarga, 0, ',', '.') }}</span>
+                
+                <span class="text-xl font-bold">Rp {{ number_format($totalPrice, 0, ',', '.') }}</span>
             </div>
-
-            
-            <button class="mt-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-                Checkout
-            </button>
+            <a href="{{route('payment.checkout')}}" class="mt-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Lanjutkan Pembayaran</a>
         </div>
 
     </div>

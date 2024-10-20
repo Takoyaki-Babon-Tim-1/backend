@@ -13,6 +13,20 @@ class FrontController extends Controller
         $categories = Category::all();
         $products = Product::all();
 
-        return view('front.index', compact('categories', 'products'));
+        // Loop through each product to calculate discount percentage
+        foreach ($products as $product) {
+            if ($product->price > 0) {
+                $product->discount_percentage = round(($product->discount / $product->price) * 100);
+            } else {
+                $product->discount_percentage = 0; // Prevent division by zero
+            }
+        }
+
+        // Filter products that have a discount
+        $discountedProducts = $products->filter(function ($product) {
+            return $product->discount > 0;
+        });
+
+        return view('front.index', compact('categories', 'products', 'discountedProducts'));
     }
 }
