@@ -52,6 +52,13 @@
                             {{-- Product Price --}}
                             <span class="ml-auto font-bold">Rp {{ number_format($total_products, 0, ',', '.') }}</span>
                         </div>
+                        <div class="mt-4">
+                            <form action="{{ route('cart.remove', $item->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="bg-red-500 text-white px-4 py-2 rounded">Hapus</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             @empty

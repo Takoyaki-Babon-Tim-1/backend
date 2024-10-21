@@ -27,16 +27,20 @@ class CartController extends Controller
 
     public function add(Request $request, $productId)
     {
+        // Fetch the product by ID
         $product = Product::findOrFail($productId);
 
+        // Check if the product is already in the cart for the user
         $cart = AddToCart::where('user_id', Auth::id())
             ->where('product_id', $product->id)
             ->first();
 
+        // Update the quantity if the product is already in the cart
         if ($cart) {
             $cart->quantity += $request->input('quantity', 1);
             $cart->save();
         } else {
+            // Otherwise, create a new cart entry
             AddToCart::create([
                 'user_id' => Auth::id(),
                 'product_id' => $product->id,
@@ -44,8 +48,20 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('front.index')->with('success', 'Product added to cart successfully!');
+        // Redirect based on the 'from' parameter
+        if ($request->input('from') === 'detail') {
+            // Redirect back to the detail page using the product's slug
+            return redirect()->route('front.detail', ['product' => $product->slug])
+                ->with('success', 'Product added to cart successfully!');
+        } else {
+            // Redirect back to the index page
+            return redirect()->route('front.index')
+                ->with('success', 'Product added to cart successfully!');
+        }
     }
+
+
+
 
     public function update(Request $request, $cartId)
     {
@@ -69,6 +85,4 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Product removed from cart!');
     }
-
-   
 }

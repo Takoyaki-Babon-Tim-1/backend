@@ -17,9 +17,18 @@
         payButton.addEventListener('click', function() {
             snap.pay('{{ $snapToken }}', {
                 onSuccess: function(result) {
-                    alert("Success");
+                    // Tampilkan SweetAlert jika pembayaran berhasil
+                    Swal.fire({
+                        title: 'Pembayaran Berhasil!',
+                        text: 'Terima kasih, pembayaran Anda telah diterima.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(function() {
+                        // Redirect ke halaman setelah SweetAlert ditutup
+                        window.location.href = "/";
+                    });
+                    
                     console.log(result);
-                    window.location.href = "/";
                 },
                 onPending: function(result) {
                     alert("Menunggu pembayaran!");

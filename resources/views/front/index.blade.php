@@ -6,7 +6,8 @@
         </a>
         <div class="flex gap-1 items-center">
             @guest
-                <a href="/login">Login</a>
+                <a href="/login">Login |</a>
+                <a href="/register"> Register</a>
             @endguest
             @auth
                 <p class="font-semibold">Hi, {{ Auth::user()->name }}</p>
@@ -18,15 +19,15 @@
                                 class="w-5 h-5 object-contain" alt="icon">
                         </div>
 
-                        <span
-                            class="absolute bottom-0 right-0 flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-red-600 rounded-full">
-                            {{ $cartItemCount }}
-                        </span>
+                        @if ($cartItemCount > 0)
+                            <span
+                                class="absolute bottom-0 right-0 flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-red-600 rounded-full">
+                                {{ $cartItemCount }}
+                            </span>
+                        @endif
                     </div>
                 </a>
             @endauth
-
-
         </div>
 
     </nav>
@@ -73,6 +74,7 @@
     {{-- End Category --}}
 
 
+
     {{-- diskon --}}
     @if ($discountedProducts->isNotEmpty())
         <section id="Diskon">
@@ -85,7 +87,7 @@
 
                     @foreach ($discountedProducts as $product)
                         <div class="swiper-slide w-fit">
-                            <a href="#" class="card">
+                            <a href="{{ route('front.detail', ['product' => $product->slug]) }}" class="card">
                                 <div
                                     class="w-[250px] shrink-0 space-y-[10px] rounded-[30px] border border-[#F1F2F6] p-4 pb-5 transition-all duration-300 hover:border-[#FF4C1C]">
                                     <div
@@ -102,10 +104,12 @@
                                             {{ $product->name }}</h3>
                                         <hr class="border-[#F1F2F6]" />
                                         <p class="text-ngekos-orange text-lg font-semibold">Rp
-                                            {{ number_format($product->total, 0, ',', '.') }}  <span
+                                            {{ number_format($product->total, 0, ',', '.') }} <span
                                                 class="text-ngekos-gray text-sm font-normal line-through text-red-500">Rp
                                                 {{ number_format($product->price, 0, ',', '.') }}</span></p>
-                                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                        <form
+                                            action="{{ route('cart.add', ['productId' => $product->id, 'from' => 'index']) }}"
+                                            method="POST">
                                             @csrf
                                             <button type="submit"
                                                 class="bg-[#FF4C1C] text-white py-2 px-4 rounded-lg hover:bg-[#ff241c] transition-all duration-300">
@@ -120,9 +124,20 @@
 
 
 
+
                 </div>
             </div>
         </section>
+    @endif
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </script>
     @endif
     {{-- end diskon --}}
 
