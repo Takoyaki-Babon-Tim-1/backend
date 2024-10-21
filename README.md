@@ -9,8 +9,9 @@ This project is a Laravel-based web application with Midtrans payment gateway in
 ```
 git clone https://github.com/your-repository.git
 cd your-repository
-2. Install Dependencies
 ```
+2. Install Dependencies
+
 Run the following command to install the required dependencies:
 
 ```
