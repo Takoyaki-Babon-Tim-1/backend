@@ -1,7 +1,3 @@
-Berikut adalah versi markdown dari README yang kamu minta:
-
-markdown
-Copy code
 # Laravel Project with Midtrans Integration
 
 This project is a Laravel-based web application with Midtrans payment gateway integration and Filament Admin for backend management.
