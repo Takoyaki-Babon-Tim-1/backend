@@ -1,12 +1,12 @@
 @extends('front.layouts.app')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold mb-6">Checkout</h1>
+    <div class="container px-4 py-8 mx-auto">
+        <h1 class="mb-6 text-2xl font-bold">Checkout</h1>
         <h3>Total: {{ number_format($totalPrice, 0, ',', '.') }}</h3>
         <!-- Show Snap token to trigger Midtrans payment popup -->
-        <button id="pay-button" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-            Pay Now
+        <button id="pay-button" class="px-4 py-2 font-bold text-white bg-indigo-500 rounded hover:bg-indigo-700">
+            Bayar Sekarang
         </button>
     </div>
 
@@ -27,7 +27,7 @@
                         // Redirect ke halaman setelah SweetAlert ditutup
                         window.location.href = "/";
                     });
-                    
+
                     console.log(result);
                 },
                 onPending: function(result) {

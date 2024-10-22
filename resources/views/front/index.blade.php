@@ -2,26 +2,26 @@
 @section('content')
     <nav class="flex items-center justify-between px-5 mt-[30px]">
         <a href="index.html" class="flex shrink-0">
-            <p class="font-bold">Takoyaki</p>
+            <p class="font-bold">Takoyaki Babon</p>
         </a>
-        <div class="flex gap-1 items-center">
+        <div class="flex items-center gap-1">
             @guest
-                <a href="/login">Login |</a>
-                <a href="/register"> Register</a>
+                <a href="/login">Masuk |</a>
+                <a href="/register">Daftar</a>
             @endguest
             @auth
                 <p class="font-semibold">Hi, {{ Auth::user()->name }}</p>
                 <a href="{{ route('cart.index') }}">
                     <div class="relative">
                         <div
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_10px_20px_0_#D6D6D6AB] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF4C1C80]">
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_10px_20px_0_#D6D6D6AB] transition-all duration-300 hover:shadow-[0_10px_20px_0_#DFDC0080]">
                             <img src="https://img.icons8.com/material-outlined/48/shopping-cart--v1.png"
-                                class="w-5 h-5 object-contain" alt="icon">
+                                class="object-contain w-5 h-5" alt="icon">
                         </div>
 
                         @if ($cartItemCount > 0)
                             <span
-                                class="absolute bottom-0 right-0 flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-red-600 rounded-full">
+                                class="absolute bottom-0 right-0 flex items-center justify-center w-4 h-4 text-xs font-semibold text-white bg-[#DFDC00] rounded-full">
                                 {{ $cartItemCount }}
                             </span>
                         @endif
@@ -33,11 +33,11 @@
     </nav>
     <div id="SearchForm" class="px-5 mt-[30px]">
         <form action="search.html"
-            class="flex items-center rounded-full p-[5px_14px] pr-[5px] gap-[10px] bg-white shadow-[0_12px_30px_0_#D6D6D652] transition-all duration-300 focus-within:ring-1 focus-within:ring-[#FF4C1C]">
+            class="flex items-center rounded-full p-[5px_14px] pr-[5px] gap-[10px] bg-white shadow-[0_12px_30px_0_#D6D6D652] transition-all duration-300 focus-within:ring-1 focus-within:ring-[#DFDC00]">
             <img src="assets/images/icons/note-favorite.svg" class="w-6 h-6" alt="icon">
             <input type="text" name="search" id="search"
-                class="appearance-none outline-none w-full font-semibold placeholder:font-normal placeholder:text-black"
-                placeholder="Find our best food recipes">
+                class="w-full font-semibold outline-none appearance-none placeholder:font-normal placeholder:text-black"
+                placeholder="Mau makan apa hari ini?">
             <button type="submit" class=" flex shrink-0 w-[42px] h-[42px]">
                 <img src="assets/images/icons/search.svg" alt="icon">
             </button>
@@ -49,16 +49,16 @@
         <div class="flex items-center justify-between px-5">
             <h2 class="font-bold">Kategori</h2>
         </div>
-        <div class="swiper w-full mt-3">
+        <div class="w-full mt-3 swiper">
             <div class="swiper-wrapper">
                 @forelse ($categories as $category)
                     <div class="swiper-slide !w-fit pb-[30px]">
                         <a href="category.html" class="card">
                             <div
-                                class="flex flex-col w-fit min-w-[90px] rounded-[31px] p-[10px] pb-5 gap-[10px] text-center bg-white shadow-[0_12px_30px_0_#D6D6D680] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF4C1C80] hover:bg-[#FF4C1C] hover:text-white">
+                                class="flex flex-col w-fit min-w-[90px] rounded-xl p-[10px] pb-5 gap-[10px] text-center bg-white shadow-[0_12px_30px_0_#D6D6D680] transition-all duration-300 hover:shadow-[0_10px_20px_0_#DFDC0080] hover:bg-[#DFDC00] hover:text-white">
                                 <div class="flex shrink-0 w-[70px] h-[70px] rounded-full bg-white">
                                     <img src="{{ Storage::url($category->icon) }}"
-                                        class="object-cover w-full h-full object-top" alt="icon">
+                                        class="object-cover object-top w-full h-full" alt="icon">
                                 </div>
                                 <h3 class="font-semibold text-sm leading-[21px]">{{ $category->name }}</h3>
                             </div>
@@ -80,7 +80,7 @@
         <section id="Diskon">
             <div class="flex items-center justify-between px-5">
                 <h2 class="font-bold">Produk Diskon</h2>
-                <a href="#" class="font-semibold text-sm leading-[21px] text-[#FF4C1C]">Explore All</a>
+                <a href="#" class="font-semibold text-sm leading-[21px] text-[#DFDC00]">Lihat Semua</a>
             </div>
             <div class="swiper w-full mt-3 pb-[100px]">
                 <div class="swiper-wrapper">
@@ -89,31 +89,31 @@
                         <div class="swiper-slide w-fit">
                             <a href="{{ route('front.detail', ['product' => $product->slug]) }}" class="card">
                                 <div
-                                    class="w-[250px] shrink-0 space-y-[10px] rounded-[30px] border border-[#F1F2F6] p-4 pb-5 transition-all duration-300 hover:border-[#FF4C1C]">
+                                    class="w-[250px] shrink-0 space-y-[10px] rounded-[30px] border border-[#F1F2F6] p-4 pb-5 transition-all duration-300 hover:border-[#DFDC00]">
                                     <div
                                         class="flex h-[150px] w-full shrink-0 items-center justify-center overflow-hidden rounded-[30px] bg-[#D9D9D9]">
                                         <div
-                                            class="font-bold text-xs leading-[18px] text-white bg-red-700 p-[10px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
+                                            class="font-bold text-xs leading-[18px] text-white bg-[#DFDC00] p-[10px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
                                             -{{ $product->discount_percentage }}%
                                         </div>
                                         <img src="{{ Storage::url($product->thumbnail) }}" alt="image"
-                                            class="h-full w-full object-cover" />
+                                            class="object-cover w-full h-full" />
                                     </div>
                                     <div class="space-y-3">
                                         <h3 class="line-clamp-2 min-h-[14px] text-lg font-semibold leading-[27px]">
                                             {{ $product->name }}</h3>
                                         <hr class="border-[#F1F2F6]" />
-                                        <p class="text-ngekos-orange text-lg font-semibold">Rp
+                                        <p class="text-lg font-semibold text-ngekos-orange">Rp
                                             {{ number_format($product->total, 0, ',', '.') }} <span
-                                                class="text-ngekos-gray text-sm font-normal line-through text-red-500">Rp
+                                                class="text-sm font-normal text-[#DFDC00] line-through text-ngekos-gray">Rp
                                                 {{ number_format($product->price, 0, ',', '.') }}</span></p>
                                         <form
                                             action="{{ route('cart.add', ['productId' => $product->id, 'from' => 'index']) }}"
                                             method="POST">
                                             @csrf
                                             <button type="submit"
-                                                class="bg-[#FF4C1C] text-white py-2 px-4 rounded-lg hover:bg-[#ff241c] transition-all duration-300">
-                                                Add to Cart
+                                                class="bg-[#DFDC00] text-white py-2 px-4 rounded-lg hover:bg-[#DFDC00] transition-all duration-300">
+                                                Tambah
                                             </button>
                                         </form>
                                     </div>
@@ -150,25 +150,25 @@
             <a href="#" class="nav-items">
                 <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px] font-semibold">
                     <img src="assets/images/icons/note-favorite-orange.svg" class="w-6 h-6" alt="icon">
-                    <span>Browse</span>
+                    <span>Jelajahi</span>
                 </div>
             </a>
             <a href="#" class="nav-items">
                 <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
                     <img src="assets/images/icons/crown-grey.svg" class="w-6 h-6" alt="icon">
-                    <span>Featured</span>
+                    <span>Keranjang</span>
                 </div>
             </a>
             <a href="#" class="nav-items">
                 <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
                     <img src="assets/images/icons/receipt-item-grey.svg" class="w-6 h-6" alt="icon">
-                    <span>Pricing</span>
+                    <span>Aktivitas</span>
                 </div>
             </a>
             <a href="#" class="nav-items">
                 <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
                     <img src="assets/images/icons/setting-2-grey.svg" class="w-6 h-6" alt="icon">
-                    <span>Settings</span>
+                    <span>Profil</span>
                 </div>
             </a>
         </div>
