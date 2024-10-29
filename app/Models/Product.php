@@ -22,7 +22,8 @@ class Product extends Model
         'discount',
     ];
 
-    public function setNameAttribute($value){
+    public function setNameAttribute($value)
+    {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
@@ -34,5 +35,11 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
-    
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_product')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
 }

@@ -13,6 +13,7 @@ class PaymentController extends Controller
 {
     public function checkout(Request $request)
     {
+        // Konfigurasi Midtrans
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = config('midtrans.is_sanitized');
@@ -23,10 +24,9 @@ class PaymentController extends Controller
 
         $totalPrice = 0;
         foreach ($cartItems as $item) {
-            $totalPrice += $item->product->total * $item->quantity;
+            $totalPrice += $item->product->total * $item->quantity; 
         }
 
-        // Generate unique order_id
         $order_id = 'ORDER-' . time() . '-' . $user->id;
 
         $order = Order::create([
@@ -35,9 +35,13 @@ class PaymentController extends Controller
             'order_id' => $order_id,
         ]);
 
+        foreach ($cartItems as $item) {
+            $order->products()->attach($item->product_id, ['quantity' => $item->quantity]);
+        }
+
         $params = [
             'transaction_details' => [
-                'order_id' => $order_id,  // Use the unique order_id
+                'order_id' => $order_id,
                 'gross_amount' => $totalPrice,
             ],
             'customer_details' => [
@@ -46,24 +50,41 @@ class PaymentController extends Controller
             ],
         ];
 
-        $snapToken = Snap::getSnapToken($params);
+        try {
+            $snapToken = Snap::getSnapToken($params);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Payment error. Please try again.']);
+        }
 
         return view('payment.checkout', compact('snapToken', 'totalPrice'));
     }
+
+
 
     public function callback(Request $request)
     {
         $notification = $request->all();
 
-        // Logika untuk memperbarui status pesanan berdasarkan notifikasi
-        $order = Order::where('order_id');
-        if ($notification['transaction_status'] == 'settlement') {
-            $order->status = 'paid';
-        } elseif ($notification['transaction_status'] == 'cancel' || $notification['transaction_status'] == 'deny' || $notification['transaction_status'] == 'expire') {
-            $order->status = 'failed';
-        }
-        $order->save();
+        // Find the order based on the order_id from the notification
+        $order = Order::where('order_id', $notification['order_id'])->first();
 
-        return response()->json(['status' => 'success']);
+        // Check if the order was found
+        if ($order) {
+            // Update the status based on the transaction_status
+            if ($notification['transaction_status'] == 'settlement') {
+                $order->status = 'success';
+                // AddToCart::where('user_id', $order->user_id)->delete();
+            } elseif (in_array($notification['transaction_status'], ['cancel', 'deny', 'expire'])) {
+                $order->status = 'failed';
+            }
+
+            // Save the updated order status
+            $order->save();
+
+            return response()->json(['status' => 'success']);
+        }
+
+        // Return a failed response if the order was not found
+        return response()->json(['status' => 'order not found'], 404);
     }
 }

@@ -18,7 +18,7 @@ class FrontController extends Controller
             if ($product->price > 0) {
                 $product->discount_percentage = round(($product->discount / $product->price) * 100);
             } else {
-                $product->discount_percentage = 0; // Prevent division by zero
+                $product->discount_percentage = 0; 
             }
         }
 
@@ -35,4 +35,7 @@ class FrontController extends Controller
         // Return view with product data
         return view('front.detail', compact('product'));
     }
+
+
+    
 }

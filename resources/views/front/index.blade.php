@@ -55,7 +55,7 @@
                     <div class="swiper-slide !w-fit pb-[30px]">
                         <a href="category.html" class="card">
                             <div
-                                class="flex flex-col w-fit min-w-[90px] rounded-xl p-[10px] pb-5 gap-[10px] text-center bg-white shadow-[0_12px_30px_0_#D6D6D680] transition-all duration-300 hover:shadow-[0_10px_20px_0_#DFDC0080] hover:bg-[#DFDC00] hover:text-white">
+                                class="flex flex-col w-fit min-w-[90px] rounded-xl p-[10px] pb-5 gap-[10px] text-center bg-white shadow-[0_12px_30px_0_#D6D6D680] transition-all duration-300 hover:shadow-[0_10px_20px_0_#F57C51] hover:bg-[#F57C51] hover:text-white">
                                 <div class="flex shrink-0 w-[70px] h-[70px] rounded-full bg-white">
                                     <img src="{{ Storage::url($category->icon) }}"
                                         class="object-cover object-top w-full h-full" alt="icon">
@@ -80,7 +80,7 @@
         <section id="Diskon">
             <div class="flex items-center justify-between px-5">
                 <h2 class="font-bold">Produk Diskon</h2>
-                <a href="#" class="font-semibold text-sm leading-[21px] text-[#DFDC00]">Lihat Semua</a>
+                <a href="#" class="font-semibold text-sm leading-[21px] text-[#F57C51]">Lihat Semua</a>
             </div>
             <div class="swiper w-full mt-3 pb-[100px]">
                 <div class="swiper-wrapper">
@@ -89,11 +89,11 @@
                         <div class="swiper-slide w-fit">
                             <a href="{{ route('front.detail', ['product' => $product->slug]) }}" class="card">
                                 <div
-                                    class="w-[250px] shrink-0 space-y-[10px] rounded-[30px] border border-[#F1F2F6] p-4 pb-5 transition-all duration-300 hover:border-[#DFDC00]">
+                                    class="w-[250px] shrink-0 space-y-[10px] rounded-[30px] border border-[#F1F2F6] p-4 pb-5 transition-all duration-300 hover:border-[#F57C51]">
                                     <div
                                         class="flex h-[150px] w-full shrink-0 items-center justify-center overflow-hidden rounded-[30px] bg-[#D9D9D9]">
                                         <div
-                                            class="font-bold text-xs leading-[18px] text-white bg-[#DFDC00] p-[10px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
+                                            class="font-bold text-xs leading-[18px] text-white bg-red-500 p-[10px_10px] rounded-full w-fit absolute top-[10px] left-[10px]">
                                             -{{ $product->discount_percentage }}%
                                         </div>
                                         <img src="{{ Storage::url($product->thumbnail) }}" alt="image"
@@ -105,14 +105,14 @@
                                         <hr class="border-[#F1F2F6]" />
                                         <p class="text-lg font-semibold text-ngekos-orange">Rp
                                             {{ number_format($product->total, 0, ',', '.') }} <span
-                                                class="text-sm font-normal text-[#DFDC00] line-through text-ngekos-gray">Rp
+                                                class="text-sm font-normal text-red-500 line-through text-ngekos-gray">Rp
                                                 {{ number_format($product->price, 0, ',', '.') }}</span></p>
                                         <form
                                             action="{{ route('cart.add', ['productId' => $product->id, 'from' => 'index']) }}"
                                             method="POST">
                                             @csrf
                                             <button type="submit"
-                                                class="bg-[#DFDC00] text-white py-2 px-4 rounded-lg hover:bg-[#DFDC00] transition-all duration-300">
+                                                class="bg-[#F57C51] text-white py-2 px-4 rounded-lg hover:bg-[#d86e47] transition-all duration-300">
                                                 Tambah
                                             </button>
                                         </form>
@@ -165,7 +165,7 @@
                     <span>Aktivitas</span>
                 </div>
             </a>
-            <a href="#" class="nav-items">
+            <a href="" class="nav-items">
                 <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
                     <img src="assets/images/icons/setting-2-grey.svg" class="w-6 h-6" alt="icon">
                     <span>Profil</span>
