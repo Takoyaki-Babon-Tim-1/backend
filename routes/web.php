@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -20,36 +21,47 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [FrontController::class, 'index'])->name('front.index');
-Route::get('/product/{product:slug}', [FrontController::class, 'detailProduct'])->name('front.detail');
+
+// Route::get('/', [FrontController::class, 'index'])->name('front.index');
+
+
+
+
+Route::middleware('guestOrVerified')->group(function () {
+    Route::get('/', [FrontController::class, 'index'])->name('front.index');
+    Route::get('/product/{product:slug}', [FrontController::class, 'detailProduct'])->name('front.detail');
+});
+
 
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/my-profile', [CustomerController::class, 'index'])->name('customer.profile');
+    Route::get('/my-profile/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+    Route::post('/update-profile', [CustomerController::class, 'updateProfile'])->name('customer.update');
+    Route::post('/update-password', [CustomerController::class, 'updatePassword'])->name('password.update');
+
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/order/{id}/view', function ($id) {
-        $order = Order::with('products')->findOrFail($id); // Load order with related products
+        $order = Order::with('products')->findOrFail($id);
         return view('components.view-order', compact('order'));
     })->name('order.view');
 
     Route::post('/product/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 
-    // Route untuk menampilkan halaman Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
-    // Route untuk menambahkan produk ke Cart
     Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
 
-    // Route untuk memperbarui jumlah produk di Cart
     Route::patch('/cart/update/{cartId}', [CartController::class, 'update'])->name('cart.update');
 
-    // Route untuk menghapus produk dari Cart
     Route::delete('/cart/remove/{cartId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');
 });

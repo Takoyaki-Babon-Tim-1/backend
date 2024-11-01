@@ -10,7 +10,6 @@
                 <a href="/register">Daftar</a>
             @endguest
             @auth
-                <p class="font-semibold">Hi, {{ Auth::user()->name }}</p>
                 <a href="{{ route('cart.index') }}">
                     <div class="relative">
                         <div
@@ -165,7 +164,7 @@
                     <span>Aktivitas</span>
                 </div>
             </a>
-            <a href="" class="nav-items">
+            <a href="{{route('customer.profile')}}" class="nav-items">
                 <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
                     <img src="assets/images/icons/setting-2-grey.svg" class="w-6 h-6" alt="icon">
                     <span>Profil</span>
