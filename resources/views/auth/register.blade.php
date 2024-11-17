@@ -1,7 +1,7 @@
 @extends('front.layouts.app')
 @section('content')
     @guest
-        <div class="w-full max-w-[440px] p-8 mx-auto">
+        <div class="w-full max-w-[500px] p-8 mx-auto">
             <div class="flex items-center justify-between mb-8 mt-[-10px]">
                 <a href="/">
                     <div
@@ -30,9 +30,8 @@
                     <label for="name" class="block text-sm font-medium text-gray-700">
                         Nama <span class="text-red-500">*</span>
                     </label>
-                    <input id="name"
-                        class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]"
-                        type="text" name="name" :value="old('name')" required autofocus autocomplete="name">
+                    <input id="name" class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]" type="text" name="name"
+                        :value="old('name')" required autofocus autocomplete="name">
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
 
@@ -41,31 +40,28 @@
                     <label for="email" class="block text-sm font-medium text-gray-700">
                         Email <span class="text-red-500">*</span>
                     </label>
-                    <input id="email"
-                        class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]"
-                        type="email" name="email" :value="old('email')" required autocomplete="username">
+                    <input id="email" class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]" type="email" name="email"
+                        :value="old('email')" required autocomplete="username">
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <!-- Avatar Upload -->
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label for="avatar" class="block text-sm font-medium text-gray-700">
-                        Unggah Foto Avatar <span class="text-red-500">*</span>
+                        Unggah Foto <span class="text-red-500">*</span>
                     </label>
-                    <input id="avatar"
-                        class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]"
-                        type="file" name="avatar" accept="image/*">
+                    <input id="avatar" class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]" type="file" name="avatar"
+                        accept="image/*">
                     <x-input-error :messages="$errors->get('avatar')" class="mt-2" />
-                </div>
+                </div> --}}
 
                 <!-- Password -->
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-gray-700">
                         Kata Sandi <span class="text-red-500">*</span>
                     </label>
-                    <input id="password"
-                        class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]"
-                        type="password" name="password" required autocomplete="new-password">
+                    <input id="password" class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]" type="password"
+                        name="password" required autocomplete="new-password">
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
@@ -74,9 +70,8 @@
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
                         Konfirmasi Kata Sandi <span class="text-red-500">*</span>
                     </label>
-                    <input id="password_confirmation"
-                        class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]"
-                        type="password" name="password_confirmation" required autocomplete="new-password">
+                    <input id="password_confirmation" class="w-full p-2 px-4 mt-1 bg-[#EDEDED] rounded-[30px]" type="password"
+                        name="password_confirmation" required autocomplete="new-password">
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
 

@@ -195,27 +195,3 @@
     @endif
 @endsection
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const stars = document.querySelectorAll('#star-rating .star');
-        
-        stars.forEach(star => {
-            star.addEventListener('click', function() {
-                const selectedRating = this.getAttribute('data-index');
-
-                // Reset semua bintang ke gambar abu-abu
-                stars.forEach(star => {
-                    star.src = "{{ asset('assets/images/icons/Star-grey.svg') }}";
-                });
-
-                // Ganti gambar bintang menjadi emas sesuai dengan rating yang dipilih
-                stars.forEach(star => {
-                    if (star.getAttribute('data-index') <= selectedRating) {
-                        star.src = "{{ asset('assets/images/icons/Star 1.svg') }}"; // Gambar bintang emas
-                    }
-                });
-            });
-        });
-    });
-</script>
-

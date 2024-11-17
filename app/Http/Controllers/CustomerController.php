@@ -25,7 +25,7 @@ class CustomerController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . Auth::id(),
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'avatar' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
         ]);
 
         $user = Auth::user();
@@ -46,7 +46,7 @@ class CustomerController extends Controller
 
         $user->save();
 
-        return redirect()->back()->with('success', 'Profile updated successfully.');
+        return redirect()->back()->with('success', 'Profile Berhasil diperbarui');
     }
 
     public function updatePassword(Request $request)

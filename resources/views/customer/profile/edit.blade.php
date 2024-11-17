@@ -18,7 +18,6 @@
         <form action="{{ route('customer.update') }}" method="POST" enctype="multipart/form-data" class="w-full mt-8 px-4">
             @csrf
             <!-- Profile Image -->
-            <!-- Profile Image -->
             <div class="relative flex justify-center mb-6">
                 <img id="profile-pic-preview" src="{{ Storage::url(Auth::user()->avatar) }}" alt="Profile Picture"
                     class="w-24 h-24 rounded-full object-cover">

@@ -9,10 +9,13 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
-use Spatie\Permission\Models\Role; 
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Storage;
+use Laravolt\Avatar\Facade as Avatar;
 
 class RegisteredUserController extends Controller
 {
@@ -34,30 +37,27 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'avatar' => ['required', 'image', 'mimes:png,jpg,jpeg,webp'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
-        if($request->hasFile('avatar')){
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-        }
-
-        // Membuat user baru
+    
+        $avatarPath = 'avatars/' . uniqid() . '.png';
+        Avatar::create($request->name)->save(storage_path('app/public/' . $avatarPath));
+    
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'avatar' => $avatarPath,
+            'avatar' => $avatarPath, 
             'password' => Hash::make($request->password),
         ]);
-
+    
         $userRole = Role::where('name', 'buyer')->first();
         if ($userRole) {
             $user->assignRole($userRole);
         }
         event(new Registered($user));
-
+    
         Auth::login($user);
-
+    
         return redirect()->route('verification.notice');
     }
 }
