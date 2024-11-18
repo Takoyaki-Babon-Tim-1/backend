@@ -9,6 +9,7 @@ use App\Http\Controllers\ReviewController;
 use App\Models\Order;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,3 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
 require __DIR__ . '/auth.php';
+
+
+// email
+Route::get('/send-welcome-email', [EmailController::class, 'sendWelcomeEmail']);
