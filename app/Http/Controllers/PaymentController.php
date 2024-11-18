@@ -55,7 +55,7 @@ class PaymentController extends Controller
     
         try {
             $snapToken = Snap::getSnapToken($params);
-            Mail::to('muhamadfajri9090@gmail.com')->send(new AdminPaymentNotification($order, $user));
+            Mail::to('sahalntesting@gmail.com')->send(new AdminPaymentNotification($order, $user));
     
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Payment error. Please try again.']);
