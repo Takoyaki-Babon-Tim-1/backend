@@ -68,16 +68,6 @@
                 </div>
 
 
-                <!-- Avatar Upload -->
-                <div>
-                    <label for="avatar" class="block my-4 text-sm font-medium text-gray-700">
-                        Unggah Foto Profil <span class="text-red-500">*</span>
-                    </label>
-                    <input id="avatar" type="file" name="avatar" accept="image/*">
-                    <x-input-error :messages="$errors->get('avatar')" class="mt-2" />
-                </div>
-
-
                 <div class="my-8">
                     <button type="submit"
                         class="w-full p-3 text-sm font-semibold text-black bg-[#EBF400] rounded-[30px] hover:bg-[#EBF400cc]">
