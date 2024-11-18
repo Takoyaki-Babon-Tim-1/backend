@@ -1,7 +1,7 @@
 @extends('front.layouts.app')
 @section('content')
     @guest
-        <div class="w-full max-w-[440px] p-8 mx-auto">
+        <div class="w-full max-w-[500px] p-8 mx-auto">
             <div class="flex items-center justify-between mb-8 mt-[-10px]">
                 <a href="/">
                     <div
