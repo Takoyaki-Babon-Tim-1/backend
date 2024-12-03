@@ -13,9 +13,8 @@
                 <a href="{{ route('cart.index') }}">
                     <div class="relative">
                         <div
-                            class="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_10px_20px_0_#D6D6D6AB] transition-all duration-300 hover:shadow-[0_10px_20px_0_#EBF40080]">
-                            <img src="https://img.icons8.com/material-outlined/48/shopping-cart--v1.png"
-                                class="object-contain w-5 h-5" alt="icon">
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-white  transition-all duration-300 hover:shadow-[0_10px_20px_0_#EBF40080]">
+                            <img src="/assets/images/icons/cart-hitam.svg" class="object-contain w-5 h-5" alt="icon">
                         </div>
 
                         @if ($cartItemCount > 0)
@@ -28,7 +27,6 @@
                 </a>
             @endauth
         </div>
-
     </nav>
     <div id="SearchForm" class="px-5 mt-[30px]">
         <form action="search.html"
@@ -42,8 +40,7 @@
             </button>
         </form>
     </div>
-    {{-- <img src="{{ Storage::url($category->icon) }}" class="object-cover " alt="icon"> --}}
-    {{-- Caategory --}}
+
     <section id="Categories" class="mt-[30px] ">
         <div class="flex items-center justify-between px-5">
             <h2 class="font-semibold">Kategori Menu</h2>
@@ -52,11 +49,13 @@
             <div class="grid grid-cols-4 gap-2 justify-items-stretch sm:grid-cols-4 lg:grid-cols-4 ">
                 @forelse ($categories as $category)
                     <div class="w-full ">
-                        <a href="category.html" class="card">
+                        <a href="{{ route('category') }}" class="card">
                             <div class="flex flex-col w-full  rounded-xl text-center bg-[#EBF400]">
-                                <div class="flex justify-center w-full h-auto sm:w-16 lg:w-full">
-                                    <img src="assets/images/thumbnails/thumbnail-1.png"
+                                <div class="flex justify-center sm:w-52 sm:h-auto lg:w-full">
+
+                                    <img src="{{ Storage::url($category->icon) }}"
                                         class="object-contain w-full h-full rounded-t-xl" alt="icon">
+                                    {{-- Caategory --}}
                                 </div>
 
                                 <div class="py-2 md:py-3">
@@ -78,15 +77,15 @@
 
     {{-- diskon --}}
     @if ($discountedProducts->isNotEmpty())
-        <section id="Diskon">
+        <section id="Diskon" class="mt-[30px] ">
             <div class="flex items-center justify-between px-5 my-4">
                 <div class="flex gap-2 ">
-                    <h2 class="font-semibold">Diskon Hari ini </h2>
+                    <h2 class="font-semibold">Diskon Hari ini</h2>
                     <img src="/assets/images/icons/discount.svg" alt="discount">
                 </div>
                 <a href="#" class="text-xs font-medium">Lihat Semua</a>
             </div>
-            <div class="swiper w-full mt-3 pb-[100px]">
+            <div class="w-full mt-3 swiper ">
                 <div class="swiper-wrapper">
                     {{-- ITEM YANG DISKON --}}
                     @foreach ($discountedProducts as $product)
@@ -106,7 +105,7 @@
                                     </div>
                                     <div>
                                         {{-- NAMA PRODUK --}}
-                                        <h3 class="min-h-[14px] text-lg font-semibold leading-[27px]">
+                                        <h3 class="min-h-[14px] text-lg font-semibold leading-[27px] truncate">
                                             {{ $product->name }}</h3>
                                         {{-- HARGA --}}
                                         <p class="mt-auto mb-8 text-lg font-semibold ">Rp
@@ -143,6 +142,62 @@
     @endif
     {{-- end diskon --}}
 
+    @if ($nonDiscountedProducts->isNotEmpty())
+        <section id="NonDiskon " class="mt-[30px]">
+            <div class="flex items-center justify-between px-5 my-4">
+                <h2 class="font-semibold">Takoyaki Babon</h2>
+            </div>
+            <div class="w-full mt-3 pb-[100px] px-5 my-4">
+                <div>
+                    @foreach ($nonDiscountedProducts as $product)
+                        <div>
+                            <a href="{{ route('front.detail', ['product' => $product->slug]) }}" class="card">
+                                <div
+                                    class="flex flex-row justify-between w-full gap-2 pb-5 transition-all duration-300 rounded-xl">
+
+                                    <div class="w-6/12">
+                                        <h3 class="min-h-[14px] text-lg font-semibold leading-[27px] truncate">
+                                            {{ $product->name }}
+                                        </h3>
+                                        <p class="mt-auto mb-8 text-lg font-semibold">
+                                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                                        </p>
+
+                                    </div>
+
+
+                                    <div class="flex flex-col items-end justify-end w-auto">
+                                        <!-- Image container -->
+                                        <div class="w-full max-w-[240px]  max-h-[150px]">
+                                            <img src="{{ Storage::url($product->thumbnail) }}" alt="image"
+                                                class="object-contain w-full max-w-[240px] h-auto   max-h-[150px] rounded-xl" />
+                                        </div>
+
+                                        <!-- Button container -->
+                                        <div class="flex justify-center w-full -mt-8">
+                                            <form
+                                                action="{{ route('cart.add', ['productId' => $product->id, 'from' => 'index']) }}"
+                                                method="POST">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="bg-[#EBF400] text-black text-base font-semibold w-full max-w-[180px] py-1 px-4 rounded-full hover:bg-[#d86e47] transition-all duration-300">
+                                                    Tambah
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        </a>
+                </div>
+    @endforeach
+    </div>
+    </div>
+    </section>
+    @endif
+
+
+
     {{-- Nav --}}
     <div id="BottomNav"
         class="fixed z-50 bottom-0 w-full max-w-[640px] mx-auto border-t border-[#E7E7E7] py-4 px-5 bg-white/70 backdrop-blur">
@@ -153,13 +208,13 @@
                     <span>Beranda</span>
                 </div>
             </a>
-            <a href="#" class="nav-items">
+            <a href="{{ route('cart.index') }}" class="nav-items">
                 <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
                     <img src="assets/images/icons/cart-black.svg" class="w-6 h-6" alt="icon">
                     <span>Keranjang</span>
                 </div>
             </a>
-            <a href="#" class="nav-items">
+            <a href="{{ route('payment.history') }}" class="nav-items">
                 <div class="flex flex-col items-center text-center gap-[7px] text-sm leading-[21px]">
                     <img src="assets/images/icons/riwayat-black.svg" class="w-6 h-6" alt="icon">
                     <span>Aktivitas</span>

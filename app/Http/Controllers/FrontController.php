@@ -27,7 +27,12 @@ class FrontController extends Controller
             return $product->discount > 0;
         });
 
-        return view('front.index', compact('categories', 'products', 'discountedProducts'))->with('success', 'Payment Successful');
+          // Filter produk tanpa diskon
+         $nonDiscountedProducts = $products->filter(function ($product) {
+        return $product->discount <= 0;
+        });
+
+         return view('front.index', compact('categories', 'products', 'discountedProducts', 'nonDiscountedProducts'))->with('success', 'Payment Successful');
     }
 
     public function detailProduct(Product $product)

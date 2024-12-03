@@ -142,13 +142,13 @@
 
                         <!-- Review Text -->
                         <div>
-                            <label for="review" class="font-semibold">Review:</label>
+                            <label for="review" class="font-semibold gap-y-2">Review:</label>
                             <textarea name="review" id="review" rows="4"
                                 class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
                                 placeholder="Tulis review Anda di sini..."></textarea>
                         </div>
 
-                        <button type="submit" class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">Kirim
+                        <button type="submit" class="px-4 py-2 text-white bg-orange-500 rounded-full hover:bg-orange-600">Kirim
                             Review</button>
                     </form>
                 </div>
@@ -171,19 +171,19 @@
     <div id="BottomNav"
         class="fixed z-50 bottom-0 w-full max-w-[640px] mx-auto border-t border-[#E7E7E7]  bg-white/70 backdrop-blur">
         <div class="flex gap-2 mt-2">
-            <div class="flex items-start w-6/12 md:w-4/12">
+            <div class="flex items-start w-6/12 px-4 py-1 md:w-4/12">
                 {{-- <img src="{{asset('assets/images/icons/note-favorite-fill-black.svg')}}" class="w-8 h-8" alt="icon"> --}}
                 <p class="text-lg font-semibold ">Rp
                     {{ number_format($product->total, 0, ',', '.') }} <span
                         class="text-sm font-normal text-red-500 line-through ">Rp
                         {{ number_format($product->price, 0, ',', '.') }}</span></p>
             </div>
-            <div class="w-6/12 md:w-8/12">
+            <div class="w-6/12 px-4 md:w-8/12">
                 <form action="{{ route('cart.add', ['productId' => $product->id, 'from' => 'detail']) }}" method="POST"
                     class="w-full">
                     @csrf
-                    <button class="py-1 px-4 rounded-full w-full font-semibold text-black bg-[#EBF400] ">
-                        Bayar
+                    <button class="rounded-full w-full font-semibold text-black bg-[#EBF400] py-2 ">
+                        Tambahkan
                     </button>
                 </form>
             </div>

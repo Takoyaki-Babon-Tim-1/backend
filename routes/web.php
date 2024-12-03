@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentHistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Models\Order;
@@ -58,17 +59,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-
     Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
-
     Route::patch('/cart/update/{cartId}', [CartController::class, 'update'])->name('cart.update');
-
     Route::delete('/cart/remove/{cartId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('/checkout', [PaymentController::class, 'checkout'])->name('payment.checkout');
+
+    // RIWAYAT
+    Route::get('/history', [PaymentHistoryController::class, 'index'])->name('payment.history');
+   
+
+     // Tambahkan route untuk halaman FAQ, Kebijakan Privasi, dan Kebijakan Layanan
+    Route::view('/faq', 'faq')->name('faq');
+    Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
+    Route::view('/terms-of-service', 'terms-of-service')->name('terms.of.service');
+
+
 });
 
 Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
 require __DIR__ . '/auth.php';
+
+ // CATEGORY
+Route::view('/category', 'category')->name('category');
 
 
 // email
