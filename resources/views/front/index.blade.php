@@ -228,4 +228,43 @@
             </a>
         </div>
     </div>
+
+
+    @if (!Auth::check())
+        <div id="onboarding" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+            <div class="relative max-w-[640px] p-5 bg-white md:rounded-2xl shadow-lg text-center h-full md:h-[90%]">
+                <div class="flex items-center justify-between mb-8 mt-[-10px] pt-3">
+                    <div class="flex items-center justify-center w-[100px] h-[40px]">
+                        <img src="assets/images/logos/takoyaki-babon-logo.svg" alt="">
+                    </div>
+                    <button onclick="closeOnboarding()" class="flex items-center justify-center mt-[2px]">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <img src="assets/images/thumbnails/onboarding-1.png" alt="Takoyaki Babon"
+                    class="w-full h-60 object-cover rounded-lg mb-4">
+                <h2 class="text-lg font-bold">Selamat datang di Takoyaki Babon!</h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Nikmati kelezatan takoyaki autentik yang lebih dari sekadar gigitan. Pesan sekarang dan rasakan
+                    sensasinya!
+                </p>
+                <div class="mt-4 space-y-3">
+                    <a href="/login"
+                        class="block w-full py-2 text-white bg-yellow-400 rounded-full font-semibold hover:bg-yellow-500">
+                        Masuk
+                    </a>
+                    <a href="/register"
+                        class="block w-full py-2 text-yellow-400 border border-yellow-400 rounded-full font-semibold hover:bg-yellow-400 hover:text-white">
+                        Belum ada akun? Daftar dulu
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
 @endsection
