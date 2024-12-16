@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class FrontController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories = Category::all();
         $products = Product::all();
@@ -31,6 +31,11 @@ class FrontController extends Controller
          $nonDiscountedProducts = $products->filter(function ($product) {
         return $product->discount <= 0;
         });
+
+        // Cek apakah user ingin melihat halaman diskon
+    if ($request->is('discount')) {
+        return view('discount', compact('discountedProducts'));
+    }
 
          return view('front.index', compact('categories', 'products', 'discountedProducts', 'nonDiscountedProducts'))->with('success', 'Payment Successful');
     }

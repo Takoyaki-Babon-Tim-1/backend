@@ -32,6 +32,8 @@ use App\Http\Controllers\EmailController;
 Route::middleware('guestOrVerified')->group(function () {
     Route::get('/', [FrontController::class, 'index'])->name('front.index');
     Route::get('/product/{product:slug}', [FrontController::class, 'detailProduct'])->name('front.detail');
+    // SEE ALL DISCOUNT
+    Route::get('/discount', [FrontController::class, 'index'])->name('discount');
 });
 
 
@@ -81,7 +83,6 @@ require __DIR__ . '/auth.php';
 
  // CATEGORY
 Route::view('/category', 'category')->name('category');
-
 
 // email
 Route::get('/send-welcome-email', [EmailController::class, 'sendWelcomeEmail']);

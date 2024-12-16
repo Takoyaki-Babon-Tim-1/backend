@@ -67,13 +67,9 @@
                 @empty
                 @endforelse
             </div>
-
         </div>
-
     </section>
     {{-- End Category --}}
-
-
 
     {{-- diskon --}}
     @if ($discountedProducts->isNotEmpty())
@@ -83,7 +79,7 @@
                     <h2 class="font-semibold">Diskon Hari ini</h2>
                     <img src="/assets/images/icons/discount.svg" alt="discount">
                 </div>
-                <a href="#" class="text-xs font-medium">Lihat Semua</a>
+                <a href="{{ route('discount') }}" class="text-xs font-medium">Lihat Semua</a>
             </div>
             <div class="w-full mt-3 swiper ">
                 <div class="swiper-wrapper">
@@ -246,7 +242,7 @@
                     </button>
                 </div>
                 <img src="assets/images/thumbnails/onboarding-1.png" alt="Takoyaki Babon"
-                    class="w-full h-60 object-cover rounded-lg mb-4">
+                    class="object-cover w-full mb-4 rounded-lg h-60">
                 <h2 class="text-lg font-bold">Selamat datang di Takoyaki Babon!</h2>
                 <p class="mt-2 text-sm text-gray-600">
                     Nikmati kelezatan takoyaki autentik yang lebih dari sekadar gigitan. Pesan sekarang dan rasakan
@@ -254,11 +250,11 @@
                 </p>
                 <div class="mt-4 space-y-3">
                     <a href="/login"
-                        class="block w-full py-2 text-white bg-yellow-400 rounded-full font-semibold hover:bg-yellow-500">
+                        class="block w-full py-2 font-semibold text-white bg-yellow-400 rounded-full hover:bg-yellow-500">
                         Masuk
                     </a>
                     <a href="/register"
-                        class="block w-full py-2 text-yellow-400 border border-yellow-400 rounded-full font-semibold hover:bg-yellow-400 hover:text-white">
+                        class="block w-full py-2 font-semibold text-yellow-400 border border-yellow-400 rounded-full hover:bg-yellow-400 hover:text-white">
                         Belum ada akun? Daftar dulu
                     </a>
                 </div>
