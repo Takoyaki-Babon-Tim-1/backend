@@ -247,11 +247,11 @@
                 </p>
                 <div class="mt-4 space-y-3">
                     <a href="/login"
-                        class="block w-full py-2 font-semibold text-white bg-yellow-400 rounded-full hover:bg-yellow-500">
+                        class="block w-full py-2 font-semibold text-black bg-[#EBF400]  rounded-full hover:bg-[#EBF400]">
                         Masuk
                     </a>
                     <a href="/register"
-                        class="block w-full py-2 font-semibold text-yellow-400 border border-yellow-400 rounded-full hover:bg-yellow-400 hover:text-white">
+                        class="block w-full py-2 font-semibold text-[#EBF400] border border-[#EBF400] rounded-full hover:bg-[#EBF400] hover:text-black ">
                         Belum ada akun? Daftar dulu
                     </a>
                 </div>

@@ -77,19 +77,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/history', [PaymentHistoryController::class, 'index'])->name('payment.history');
    
 
-     // Tambahkan route untuk halaman FAQ, Kebijakan Privasi, dan Kebijakan Layanan
-    Route::view('/faq', 'faq')->name('faq');
-    Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
-    Route::view('/terms-of-service', 'terms-of-service')->name('terms.of.service');
+   
 
 
 });
 
+  // Tambahkan route untuk halaman FAQ, Kebijakan Privasi, dan Kebijakan Layanan
+Route::view('/faq', 'faq')->name('faq');
+Route::view('/privacy-policy', 'privacy-policy')->name('privacy.policy');
+Route::view('/terms-of-service', 'terms-of-service')->name('terms.of.service');
+
 Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
 require __DIR__ . '/auth.php';
-
- // CATEGORY
-// Route::view('/category', 'category')->name('category');
 
 // email
 Route::get('/send-welcome-email', [EmailController::class, 'sendWelcomeEmail']);
