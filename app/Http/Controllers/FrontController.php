@@ -33,9 +33,9 @@ class FrontController extends Controller
         });
 
         // Cek apakah user ingin melihat halaman diskon
-    if ($request->is('discount')) {
-        return view('discount', compact('discountedProducts'));
-    }
+        if ($request->is('discount')) {
+            return view('discount', compact('discountedProducts'));
+        }
 
          return view('front.index', compact('categories', 'products', 'discountedProducts', 'nonDiscountedProducts'))->with('success', 'Payment Successful');
     }
@@ -45,7 +45,18 @@ class FrontController extends Controller
         // Return view with product data
         return view('front.detail', compact('product'));
     }
-
-
     
+    public function showCategory($slug)
+    {
+    // Cari kategori berdasarkan slug
+    $category = Category::where('slug', $slug)->firstOrFail();
+
+    // Ambil produk yang berhubungan dengan kategori tersebut
+    $products = $category->products;
+
+    // Return view dengan kategori dan produk terkait
+    return view('front.category', compact('category', 'products'));
+    }
+
+
 }

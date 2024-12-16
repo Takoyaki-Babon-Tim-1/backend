@@ -34,6 +34,10 @@ Route::middleware('guestOrVerified')->group(function () {
     Route::get('/product/{product:slug}', [FrontController::class, 'detailProduct'])->name('front.detail');
     // SEE ALL DISCOUNT
     Route::get('/discount', [FrontController::class, 'index'])->name('discount');
+    // Kategori
+    Route::get('/category/{category:slug}', [FrontController::class, 'showCategory'])->name('front.category');
+
+
 });
 
 
@@ -82,7 +86,7 @@ Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('
 require __DIR__ . '/auth.php';
 
  // CATEGORY
-Route::view('/category', 'category')->name('category');
+// Route::view('/category', 'category')->name('category');
 
 // email
 Route::get('/send-welcome-email', [EmailController::class, 'sendWelcomeEmail']);

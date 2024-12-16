@@ -49,15 +49,13 @@
             <div class="grid grid-cols-4 gap-2 justify-items-stretch sm:grid-cols-4 lg:grid-cols-4 ">
                 @forelse ($categories as $category)
                     <div class="w-full ">
-                        <a href="{{ route('category') }}" class="card">
+                        <a href="{{ route('front.category', ['category' => $category->slug]) }}" class="card">
                             <div class="flex flex-col w-full  rounded-xl text-center bg-[#EBF400]">
                                 <div class="flex justify-center sm:w-52 sm:h-auto lg:w-full">
 
                                     <img src="{{ Storage::url($category->icon) }}"
                                         class="object-contain w-full h-full rounded-t-xl" alt="icon">
-                                    {{-- Caategory --}}
                                 </div>
-
                                 <div class="py-2 md:py-3">
                                     <h3 class="text-sm font-medium">{{ $category->name }}</h3>
                                 </div>

@@ -35,7 +35,7 @@
         <div class="flex items-center justify-between px-5 my-4">
             <h2 class="font-semibold">Diskon Hari ini</h2>
         </div>
-        <div class="w-full px-5 mt-3 ">
+        <div class="w-full px-5 mt-4 ">
             @foreach ($discountedProducts as $product)
                 <div class="my-3">
                     <a href="{{ route('front.detail', ['product' => $product->slug]) }}">
