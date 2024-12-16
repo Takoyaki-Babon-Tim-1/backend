@@ -6,16 +6,24 @@
         <div class="pb-8">
             <h1 class="text-2xl font-semibold">Riwayat</h1>
         </div>
-
         <div class="flex flex-row pb-3 gap-x-10">
-            <div><a href="{{ route('payment.history', ['status' => 'semua']) }}"
-                    class="text-lg font-medium {{ request('status') === 'semua' ? 'underline decoration-2 underline-offset-2' : 'text-gray-400' }}">Semua</a>
+            <div>
+                <a href="{{ route('payment.history', ['status' => 'semua']) }}"
+                    class="text-lg font-medium {{ request('status') === 'semua' || !request('status') ? 'font-bold underline decoration-2 underline-offset-2' : 'text-gray-400' }}">
+                    Semua
+                </a>
             </div>
-            <div><a href="{{ route('payment.history', ['status' => 'selesai']) }}"
-                    class="text-lg font-medium {{ request('status') === 'selesai' ? 'underline decoration-2 underline-offset-2' : 'text-gray-400' }}">Selesai</a>
+            <div>
+                <a href="{{ route('payment.history', ['status' => 'selesai']) }}"
+                    class="text-lg font-medium {{ request('status') === 'selesai' ? 'font-bold underline decoration-2 underline-offset-2' : 'text-gray-400' }}">
+                    Selesai
+                </a>
             </div>
-            <div><a href="{{ route('payment.history', ['status' => 'dibatalkan']) }}"
-                    class="text-lg font-medium {{ request('status') === 'dibatalkan' ? 'underline decoration-2 underline-offset-2' : 'text-gray-400' }}">Dibatalkan</a>
+            <div>
+                <a href="{{ route('payment.history', ['status' => 'dibatalkan']) }}"
+                    class="text-lg font-medium {{ request('status') === 'dibatalkan' ? 'font-bold underline decoration-2 underline-offset-2' : 'text-gray-400' }}">
+                    Dibatalkan
+                </a>
             </div>
         </div>
 
@@ -25,48 +33,54 @@
                 <p>{{ $noOrdersMessage }}</p>
             </div>
         @else
-            @foreach ($orders as $order)
+            @foreach ($groupedOrders as $dateKey => $orders)
                 <div class="mb-4 bg-white rounded-xl">
-                    <p>ID <span class="font-bold">{{ $order->order_id }}</span></p>
+                    <p class="font-bold">{{ $orders->first()->order_id }}</p>
+
                     <hr class="text-gray-200">
 
-                    <div id="order-content"
-                        class="flex flex-col gap-y-3 overflow-hidden max-h-[120px] transition-all duration-300">
-                        @foreach ($order->products as $product)
-                            <div class="flex flex-row justify-between pt-2">
-                                <div class="flex flex-row items-center justify-center gap-x-3">
-                                    <div class="w-6/12">
-                                        <img src="{{ Storage::url($product->thumbnail) }}" alt="image-order"
-                                            class="object-contain w-full max-w-[90px] h-auto rounded-xl">
+                    <div id="order-content-{{ $dateKey }}"
+                        class="flex flex-col gap-y-3 overflow-hidden m-0 max-h-[120px] transition-all duration-300">
+                        @foreach ($orders as $order)
+                            @foreach ($order->products as $product)
+                                <div class="flex flex-row justify-between pt-2">
+                                    <div class="flex flex-row ">
+                                        <div class="w-4/12 max-w-[90px] mr-2">
+                                            <img src="{{ Storage::url($product->thumbnail) }}" alt="image-order"
+                                                class="object-contain w-full h-auto rounded-xl">
+                                        </div>
+                                        <div class="flex flex-col w-8/12">
+                                            <p class="font-bold truncate">{{ $product->name }}</p>
+                                            <p>{{ \Carbon\Carbon::parse($order->created_at)->format('d M Y H:i') }}</p>
+                                        </div>
                                     </div>
-                                    <div class="flex flex-col">
-                                        <p class="font-bold truncate">{{ $product->name }}</p>
-                                        <p>{{ $order->created_at->format('d M Y') }}</p>
+                                    <div>
+                                        <div class="bg-[#E6F2F2] text-[#27AE60] flex items-center justify-center py-1 px-3">
+                                            {{ $order->status }}</div>
+                                        <div class="flex items-end pt-10">Rp
+                                            {{ number_format($order->total_price, 0, ',', '.') }}
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="bg-[#E6F2F2] text-[#27AE60] flex items-center justify-center py-1 px-3">
-                                        {{ $order->status }}</div>
-                                    <div class="flex items-end pt-10">Rp
-                                        {{ number_format($order->total_price, 0, ',', '.') }}
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         @endforeach
                     </div>
 
-                    {{-- Lihat Semua Button --}}
-                    <div class="flex flex-col items-center justify-center w-full pt-2">
-                        <button id="toggle-button" class="flex flex-col items-center pb-2 text-sm font-normal gap-x-1">
-                            <div>
-                                <div id="button-text">Lihat Semua</div>
-                            </div>
-                            <div>
-                                <img id="toggle-icon" src="{{ asset('assets/images/icons/down.svg') }}" alt="down-arrow"
-                                    class="transition-transform">
-                            </div>
-                        </button>
-                    </div>
+                    {{-- Display the expand button only if the order contains more than 1 product --}}
+                    @if ($orders->first()->products->count() > 1)
+                        <div class="flex flex-col items-center justify-center w-full pt-2">
+                            <button class="toggle-button" data-group="{{ $dateKey }}"
+                                class="flex flex-col items-center pb-2 text-sm font-normal ">
+                                <div>
+                                    <div class="button-text">Lihat Semua</div>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <div> <img class="toggle-icon" src="{{ asset('assets/images/icons/down.svg') }}"
+                                            alt="down-arrow" class="transition-transform"></div>
+                                </div>
+                            </button>
+                        </div>
+                    @endif
 
                     <div class="flex flex-row justify-between pt-2">
                         <div></div>
@@ -112,27 +126,28 @@
             </a>
         </div>
     </div>
-@endsection
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleButton = document.getElementById('toggle-button');
-        const orderContent = document.getElementById('order-content');
-        const toggleIcon = document.getElementById('toggle-icon');
-        const buttonText = document.getElementById('button-text');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listener for each toggle button
+            document.querySelectorAll('.toggle-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const group = this.dataset.group;
+                    const orderContent = document.getElementById(`order-content-${group}`);
+                    const toggleIcon = this.querySelector('.toggle-icon');
+                    const buttonText = this.querySelector('.button-text');
 
-        toggleButton.addEventListener('click', function() {
-            if (orderContent.style.maxHeight === 'none') {
-                toggleIcon.src = '{{ asset('assets/images/icons/down.svg') }}';
-                orderContent.style.maxHeight = '120px';
-                toggleIcon.style.transform = 'rotate(0deg)';
-                buttonText.innerText = 'Lihat Semua';
-            } else {
-                orderContent.style.maxHeight = 'none';
-                toggleIcon.src = '{{ asset('assets/images/icons/down.svg') }}';
-                toggleIcon.style.transform = 'rotate(180deg)';
-                buttonText.innerText = 'Tutup';
-            }
+                    if (orderContent.style.maxHeight === 'none') {
+                        orderContent.style.maxHeight = '120px';
+                        toggleIcon.style.transform = 'rotate(0deg)';
+                        buttonText.innerText = 'Lihat Semua';
+                    } else {
+                        orderContent.style.maxHeight = 'none';
+                        toggleIcon.style.transform = 'rotate(180deg)';
+                        buttonText.innerText = 'Tutup';
+                    }
+                });
+            });
         });
-    });
-</script>
+    </script>
+@endsection
