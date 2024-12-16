@@ -42,20 +42,21 @@ class FrontController extends Controller
 
     public function detailProduct(Product $product)
     {
-        // Return view with product data
         return view('front.detail', compact('product'));
     }
     
     public function showCategory($slug)
     {
-    // Cari kategori berdasarkan slug
-    $category = Category::where('slug', $slug)->firstOrFail();
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $products = $category->products;
+        return view('front.category', compact('category', 'products'));
+    }
 
-    // Ambil produk yang berhubungan dengan kategori tersebut
-    $products = $category->products;
-
-    // Return view dengan kategori dan produk terkait
-    return view('front.category', compact('category', 'products'));
+    public function search(Request $request)
+    {
+        $query = $request->input('search');
+        $products = Product::where('name', 'like', '%' . $query . '%')->get();
+        return view('front.search', compact('products'));
     }
 
 

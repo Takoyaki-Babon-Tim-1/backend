@@ -36,6 +36,9 @@ Route::middleware('guestOrVerified')->group(function () {
     Route::get('/discount', [FrontController::class, 'index'])->name('discount');
     // Kategori
     Route::get('/category/{category:slug}', [FrontController::class, 'showCategory'])->name('front.category');
+    // Search
+    Route::get('/search', [FrontController::class, 'search'])->name('front.search');
+
 
 
 });

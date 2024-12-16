@@ -29,7 +29,7 @@
         </div>
     </nav>
     <div id="SearchForm" class="px-5 mt-[30px]">
-        <form action="search.html"
+        <form action="{{ route('front.search') }}" method="GET"
             class="flex items-center rounded-full p-[5px_14px] pr-[5px] gap-[10px] bg-white shadow-[0_12px_30px_0_#D6D6D652] transition-all duration-300 focus-within:ring-1 focus-within:ring-[#EBF400]">
             <img src="assets/images/icons/menu.svg" alt="icon">
             <input type="text" name="search" id="search"
@@ -40,6 +40,7 @@
             </button>
         </form>
     </div>
+
 
     <section id="Categories" class="mt-[30px] ">
         <div class="flex items-center justify-between px-5">
@@ -156,9 +157,7 @@
                                         <p class="mt-auto mb-8 text-lg font-semibold">
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
                                         </p>
-
                                     </div>
-
 
                                     <div class="flex flex-col items-end justify-end w-auto">
                                         <!-- Image container -->
