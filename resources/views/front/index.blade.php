@@ -137,57 +137,59 @@
     @endif
     {{-- end diskon --}}
 
-    @if ($nonDiscountedProducts->isNotEmpty())
-        <section id="NonDiskon " class="mt-[30px]">
-            <div class="flex items-center justify-between px-5 my-4">
-                <h2 class="font-semibold">Takoyaki Babon</h2>
-            </div>
-            <div class="w-full mt-3 pb-[100px] px-5 my-4">
-                <div>
-                    @foreach ($nonDiscountedProducts as $product)
-                        <div>
-                            <a href="{{ route('front.detail', ['product' => $product->slug]) }}" class="card">
-                                <div
-                                    class="flex flex-row justify-between w-full gap-2 pb-5 transition-all duration-300 rounded-xl">
+    @if ($categories->isNotEmpty())
+        @foreach ($categories as $category)
+            @if ($category->products->isNotEmpty())
+                <section id="category-{{ $category->slug }}" class="mt-[30px] pb-[20px]">
+                    <div class="flex items-center justify-between px-5 my-4">
+                        <h2 class="font-semibold">{{ $category->name }} Babon</h2>
+                    </div>
+                    <div class="grid w-full grid-cols-1 gap-6 my-4 mt-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                        @foreach ($category->products as $product)
+                            <div class="px-5 last:pb-[40px]">
+                                <a href="{{ route('front.detail', ['product' => $product->slug]) }}" class="card">
+                                    <div
+                                        class="flex flex-row justify-between w-full gap-2 pb-5 transition-all duration-300 rounded-xl">
 
-                                    <div class="w-6/12">
-                                        <h3 class="min-h-[14px] text-lg font-semibold leading-[27px] truncate">
-                                            {{ $product->name }}
-                                        </h3>
-                                        <p class="mt-auto mb-8 text-lg font-semibold">
-                                            Rp {{ number_format($product->price, 0, ',', '.') }}
-                                        </p>
-                                    </div>
-
-                                    <div class="flex flex-col items-end justify-end w-auto">
-                                        <!-- Image container -->
-                                        <div class="w-full max-w-[240px]  max-h-[150px]">
-                                            <img src="{{ Storage::url($product->thumbnail) }}" alt="image"
-                                                class="object-contain w-full max-w-[240px] h-auto   max-h-[150px] rounded-xl" />
+                                        <div class="w-6/12">
+                                            <h3 class="min-h-[14px] text-lg font-semibold leading-[27px] truncate">
+                                                {{ $product->name }}
+                                            </h3>
+                                            <p class="mt-auto mb-8 text-lg font-semibold">
+                                                Rp {{ number_format($product->price, 0, ',', '.') }}
+                                            </p>
                                         </div>
 
-                                        <!-- Button container -->
-                                        <div class="flex justify-center w-full -mt-8">
-                                            <form
-                                                action="{{ route('cart.add', ['productId' => $product->id, 'from' => 'index']) }}"
-                                                method="POST">
-                                                @csrf
-                                                <button type="submit"
-                                                    class="bg-[#EBF400] text-black text-base font-semibold w-full max-w-[180px] py-1 px-4 rounded-full hover:bg-[#d86e47] transition-all duration-300">
-                                                    Tambah
-                                                </button>
-                                            </form>
+                                        <div class="flex flex-col items-end justify-end w-auto">
+                                            <!-- Image container -->
+                                            <div class="w-full max-w-[240px] max-h-[150px]">
+                                                <img src="{{ Storage::url($product->thumbnail) }}" alt="image"
+                                                    class="object-contain w-full max-w-[240px] h-auto max-h-[150px] rounded-xl" />
+                                            </div>
+
+                                            <!-- Button container -->
+                                            <div class="flex justify-center w-full -mt-8">
+                                                <form
+                                                    action="{{ route('cart.add', ['productId' => $product->id, 'from' => 'index']) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="bg-[#EBF400] text-black text-base font-semibold w-full max-w-[180px] py-1 px-4 rounded-full hover:bg-[#d86e47] transition-all duration-300">
+                                                        Tambah
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                        </div>
-                        </a>
-                </div>
-    @endforeach
-    </div>
-    </div>
-    </section>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+        @endforeach
     @endif
+
 
 
 
